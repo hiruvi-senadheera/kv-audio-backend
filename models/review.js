@@ -23,6 +23,16 @@ const reviewSchema = new mongoose.Schema({
         type : Date,
         required : true,
         default : Date.now()
+    },
+    profilePicture : {
+        type : String,
+        required : true,
+        default : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    },
+    isApproved : {
+        type : Boolean,
+        required : true,
+        default : false
     }
 
 })

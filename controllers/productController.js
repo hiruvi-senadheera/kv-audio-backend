@@ -14,7 +14,7 @@ export function addProduct(req,res){
     // check if the user is admin
     if(req.user.role != "admin"){
         res.status(403).json({
-            error : "You are not authorized to add product"
+            message : "You are not authorized to add product"
         })
         return      
         }
