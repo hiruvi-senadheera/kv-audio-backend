@@ -1,6 +1,9 @@
 import User from "../models/user.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+
+dotenv.config() //load environment variables from .env file
 
 // register a new user
 export function registerUser(req,res){
@@ -49,7 +52,7 @@ export function loginUser(req,res){
                         lastName : user.lastName,
                         email : user.email,
                         role : user.role
-                    },"kv-secret-99")
+                    },process.env.JWT_SECRET)
                     
                     res.json({
                         message : "Login successful",
