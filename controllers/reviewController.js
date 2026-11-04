@@ -1,6 +1,6 @@
-import Product from "../models/product.js";
+import Product from "../models/review.js";
 
-export function addProduct(req,res){
+export function addReview(req,res){
     console.log(req.user)
 
     // check if the user is logged in
@@ -11,26 +11,24 @@ export function addProduct(req,res){
         return
     }
 
-    // check if the user is admin
-    if(req.user.role != "admin"){
-        res.status(403).json({
-            message : "You are not authorized to add product"
-        })
-        return      
-        }  
 
     const data = req.body
-    const newProduct = new Product(data)
-    newProduct.save().then(
+
+    data.name = req.user.firstName + " " + req.user.lastName
+    data.profilePicture = req.user.profilePicture
+    data.email = req.user.email
+    
+    const newReview = new Review(data)
+    newReview.save().then(
         ()=>{
             res.json({
-                message : "Product added successfully"
+                message : "Review added successfully"
             })
         }
     ).catch(
         (error)=>{
             res.status(500).json({
-                error : "Failed to add product"
+                error : "Failed to add review"
             })
         }
     )
