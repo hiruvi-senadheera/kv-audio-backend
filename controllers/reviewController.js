@@ -1,7 +1,7 @@
-import Product from "../models/review.js";
+import Review from "../models/review.js"
 
 export function addReview(req,res){
-    console.log(req.user)
+    // console.log(req.user)
 
     // check if the user is logged in
     if(req.user == null){
