@@ -17,7 +17,7 @@ export function addProduct(req,res){
             message : "You are not authorized to add product"
         })
         return      
-        }
+        }  
 
     const data = req.body
     const newProduct = new Product(data)
