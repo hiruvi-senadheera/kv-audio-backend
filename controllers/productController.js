@@ -3,7 +3,7 @@ import Product from "../models/product.js";
 
 // add product
 export async function addProduct(req,res){
-    console.log(req.user)
+    // console.log(req.user)
 
     // check if the user is logged in
     if(req.user == null){
@@ -53,9 +53,23 @@ export async function addProduct(req,res){
 
 //view product
 export async function getProducts(req,res){
+
+    let isAdmin = false
+    if(req.user != null){
+        if(req.user.role == "admin"){
+            isAdmin = true
+        }
+    }
+
     try{
-        const products = await Product.find()
-        res.json(products)
+        if(isAdmin){
+            const products = await Product.find()
+            res.json(products)
+            return
+        }else{
+            const products = await Product.find({availability:true});
+            res.json(products)
+        }
     }catch(error){
         res.status(500).json({
             error : "Failed to get products"
