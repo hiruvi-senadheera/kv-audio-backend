@@ -33,6 +33,11 @@ const productSchema = new mongoose.Schema({
         type : Boolean,
         required : true,
         default : true
+    },
+    image : {
+        type : String,
+        required : true,
+        default : "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500"
     }
 
 })
