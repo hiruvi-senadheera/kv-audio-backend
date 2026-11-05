@@ -84,6 +84,17 @@ export function isAdmin(req){
     return isAdmin
 }
 
+// check isCustomer
+export function isCustomer(req){
+    let isCustomer = false
+    if(req.user != null){
+        if(req.user.role == "customer"){
+            isCustomer = true
+        }
+    }
+    return isCustomer
+}
+
 
 
 
