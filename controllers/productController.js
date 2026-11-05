@@ -76,3 +76,33 @@ export async function getProducts(req,res){
         })
     }
 }
+
+
+//delete product
+// export async function deleteProducts(req,res){
+
+//     let isAdmin = false
+//     if(req.user != null){
+//         if(req.user.role == "admin"){
+//             isAdmin = true
+//         }
+//     }
+
+//     try{
+//         if(isAdmin){
+//             if(req.product.id == id){
+//                 const products = await Product.deleteOne()
+//                 res.json("Product deleted successfully")
+//                 return
+//             }
+            
+//         }else{
+//             const products = await Product.find({availability:true});
+//             res.json(products)
+//         }
+//     }catch(error){
+//         res.status(500).json({
+//             error : "Failed to get products"
+//         })
+//     }
+// }
