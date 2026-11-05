@@ -95,6 +95,7 @@ export async function updateProduct(req,res) {
             res.status(403).json({
             error : "You are not authorized to update products"
         })
+        return
         }
     }catch{
         res.status(500).json({
@@ -105,26 +106,34 @@ export async function updateProduct(req,res) {
 
 
 //delete product
-// export async function deleteProducts(req,res){
+export async function deleteProduct(req,res) {
+    try{
+        if(isAdmin(req)){
 
-//     try{
-//         if(isAdmin(req)){
-//             if(req.product.id == id){
-//                 const products = await Product.deleteOne()
-//                 res.json("Product deleted successfully")
-//                 return
-//             }
-            
-//         }else{
-//             const products = await Product.find({availability:true});
-//             res.json(products)
-//         }
-//     }catch(error){
-//         res.status(500).json({
-//             error : "Failed to get products"
-//         })
-//     }
-// }
+            const key = req.params.key
+
+            await Product.deleteOne(
+                {
+                    key:key
+                }
+            )
+
+            res.json({
+                message : "Product deleted successfully"
+            })
+        }else{
+            res.status(403).json({
+            error : "You are not authorized to delete products"
+        })
+        return
+        }
+    }catch{
+        res.status(500).json({
+            error : "Failed to delete products"
+        })
+    }
+}
+
 
 
 
