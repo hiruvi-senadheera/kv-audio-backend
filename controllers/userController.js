@@ -73,5 +73,17 @@ export function loginUser(req,res){
     )
 }
 
+// check isAdmin
+export function isAdmin(req){
+    let isAdmin = false
+    if(req.user != null){
+        if(req.user.role == "admin"){
+            isAdmin = true
+        }
+    }
+    return isAdmin
+}
 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJoaXJ1dmkiLCJsYXN0TmFtZSI6IkRvZSIsImVtYWlsIjoiaGlydXZpQGdtYWlsLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc5MzczNTU5M30.nUjYa8Tp1I2lESBtiqF4UytAuKRb2GYaf-Z3mFvsJsc
+
+
+

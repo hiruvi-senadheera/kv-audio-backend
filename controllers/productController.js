@@ -1,4 +1,5 @@
 import Product from "../models/product.js";
+import { isAdmin } from "./userController.js";
 
 
 // add product
@@ -54,15 +55,8 @@ export async function addProduct(req,res){
 //view product
 export async function getProducts(req,res){
 
-    let isAdmin = false
-    if(req.user != null){
-        if(req.user.role == "admin"){
-            isAdmin = true
-        }
-    }
-
     try{
-        if(isAdmin){
+        if(isAdmin(req)){
             const products = await Product.find()
             res.json(products)
             return
@@ -78,18 +72,43 @@ export async function getProducts(req,res){
 }
 
 
+//update product
+export async function updateProduct(req,res) {
+    try{
+        if(isAdmin(req)){
+
+            const key = req.params.key
+            const data = req.body
+
+            await Product.updateOne(
+                {
+                    key:key
+                },
+                data
+            )
+
+            res.json({
+                message : "Product updated successfully"
+            })
+            return
+        }else{
+            res.status(403).json({
+            error : "You are not authorized to update products"
+        })
+        }
+    }catch{
+        res.status(500).json({
+            error : "Failed to update products"
+        })
+    }
+}
+
+
 //delete product
 // export async function deleteProducts(req,res){
 
-//     let isAdmin = false
-//     if(req.user != null){
-//         if(req.user.role == "admin"){
-//             isAdmin = true
-//         }
-//     }
-
 //     try{
-//         if(isAdmin){
+//         if(isAdmin(req)){
 //             if(req.product.id == id){
 //                 const products = await Product.deleteOne()
 //                 res.json("Product deleted successfully")
@@ -106,3 +125,6 @@ export async function getProducts(req,res){
 //         })
 //     }
 // }
+
+
+
