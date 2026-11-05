@@ -62,19 +62,99 @@ export function deleteReview(req,res){
 
     const email = req.params.email
 
-    Review.deleteOne({
-        email : email
-    }).then(
-        ()=>{
-            res.json({
-                message : "Review deleted successfully"
+    if(req.user == null){
+        res.status(401).json({
+            error : "Please login and try again"
+        })
+        return
+    }
+
+    if(req.user.role == "admin"){
+        Review.deleteOne({
+            email : email
+        }).then(
+            ()=>{
+                res.json({
+                    message : "Review deleted successfully"
+                })
+            }
+        ).catch(
+            ()=>{
+                res.status(500).json({
+                    error : "Failed to delete review"
+                }) 
+            }
+        )
+        return
+    }
+
+    if(req.user.role == "customer"){
+
+        if(req.user.email == email){
+            Review.deleteOne({
+                email : email
+            }).then(
+                ()=>{
+                    res.json({
+                        message : "Review deleted successfully"
+                    })
+                }
+            ).catch(
+                ()=>{
+                    res.status(500).json({
+                        error : "Failed to delete review"
+                    }) 
+                }
+            )  
+        }else{
+            res.status(403).json({
+                error : "You are not authorized to delete this review"
             })
         }
-    ).catch(
-        ()=>{
-            res.status(500).json({
-                error : "Failed to delete review"
-            })
-        }
-    )
+
+    }
+
+    
 } 
+
+
+export function approveReview(req,res){
+
+    const email = req.params.email
+
+    if(req.user == null){
+        res.status(401).json({
+            error : "Please login and try again"
+        })
+        return
+    }
+
+    if(req.user.role == "admin"){
+        Review.updateOne(
+            {
+                email : email
+            },
+            {
+                isApproved : true
+            }
+        ).then(
+            ()=>{
+                res.json({
+                    message : "Review approved successfully"
+                })
+            } 
+        ).catch(
+            ()=>{
+                res.status(500).json({
+                    error : "Failed to approve review"
+                }) 
+            }
+        )
+        return
+    }else{
+        res.status(403).json({
+            error : "You are not admin. only admin can approve reviews"
+        })
+    }
+
+}
