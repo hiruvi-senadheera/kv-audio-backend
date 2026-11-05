@@ -63,12 +63,17 @@ export async function getReviews(req,res){
     const user = req.user
 
     try{
-        const reviews = await Review.find()
-        res.json(reviews)
-    }catch{
+        if(user.role == "admin"){
+            const reviews = await Review.find();
+            res.json(reviews)
+        }else{
+            const reviews = await Review.find({isApproved:true});
+            res.json(reviews)
+        }
+    }catch(error){
         res.json(500).json(
             {
-                error : "Review loading failed"
+                error : "failed to get reviews"
             }
         )
     }
