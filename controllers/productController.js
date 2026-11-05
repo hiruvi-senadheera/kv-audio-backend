@@ -38,7 +38,7 @@ export async function addProduct(req,res){
         await newProduct.save()
         res.json(
             {
-                message : "product registration successfully"
+                message : "product added successfully"
             }
         )
     }catch(error){
