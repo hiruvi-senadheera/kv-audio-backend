@@ -11,6 +11,9 @@ export function registerUser(req,res){
     // const newUser = new User(req.body)
     const data = req.body
     data.password = bcrypt.hashSync(data.password,10)//hash the password before saving to database
+
+    
+
     const newUser = new User(data)
     
     newUser.save().then(
