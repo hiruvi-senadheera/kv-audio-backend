@@ -70,3 +70,68 @@ export async function getInquiries(req,res){
         })
     }
 }
+
+
+//delete inquiries
+export async function deleteInquiry(req,res){
+
+    try{
+        if(isAdmin(req)){
+            const id = req.params.id
+
+            await Inquiry.deleteOne(
+                {
+                    id : id
+                }
+            )
+            res.json({
+                message : "Inquiry deleted successfully"
+            })
+            return
+        }else if(isCustomer(req)){
+            const id = req.params.id
+            const inquiry = await Inquiry.findOne(
+                {
+                    id : id
+                }
+            )
+            if(inquiry == null){
+                res.status(404).json({
+                    message : "Inquiry not found"
+                })
+                return
+            }else{
+                if(inquiry.email == req.user.email){
+                    await Inquiry.deleteOne(
+                        {
+                            id : id
+                        }
+                    )
+                    res.json({
+                        message : "Inquiry deleted successfully"
+                    })
+                    return
+                }else{
+                    res.status(403).json(
+                        {
+                            message : "you are not authorized to delete inquiries"
+                        }
+                    )
+                    return
+                }
+            }
+        }else{
+            res.status(403).json(
+                        {
+                            message : "you are not authorized to delete inquiries"
+                        }
+                    )
+                    return
+        }
+    }catch(error){
+        res.status(500).json({
+            error : "Failed to delete inquiries"
+        })
+    }
+    
+} 
