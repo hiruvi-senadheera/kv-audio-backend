@@ -135,3 +135,65 @@ export async function deleteInquiry(req,res){
     }
     
 } 
+
+//update inquiries
+export async function updateInquiry(req,res) {
+
+    try{
+
+        if(isAdmin(req)){
+            const id = req.params.id
+            const data = req.body
+
+            await Inquiry.updateOne({
+                id:id
+            },data
+            )
+            res.json({
+                message : "Inquiry updated successfully"
+            })
+        }else if(isCustomer(req)){
+            const id = req.params.id
+            const data = req.body
+
+            const inquiry = await Inquiry.findOne({
+                id:id
+            })
+            if(inquiry == null){
+                res.status(404).json({
+                    message : "Inquiry not found"
+                })
+                return
+            }else{
+                if(inquiry.email == req.user.email){
+                    await Inquiry.updateOne(
+                        {id:id},{message:data.message}
+                    )
+                    res.json({
+                        message : "Inquiry updated successfully"
+                    })
+                    return
+                }else{
+                    res.status(403).json(
+                        {
+                            message : "you are not authorized to update inquiries"
+                        }
+                    )
+                    return
+                }
+            }
+        }else{
+            res.status(403).json(
+                {
+                    message : "you are not authorized to update inquiries"
+                }
+            )
+        }
+
+    }catch(error){
+        res.status(500).json({
+            error : "Failed to update inquiries"
+        })
+    }
+    
+}
