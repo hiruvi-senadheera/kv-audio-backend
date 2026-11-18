@@ -7,10 +7,12 @@ import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import reviewRouter from "./routes/reviewRouter.js"
 import inquiryRouter from "./routes/inquiryRouter.js"
+import cors from "cors"
 
 dotenv.config() //load environment variables from .env file
 
 const app = express()
+app.use(cors())
 
 //middleware - it is a function that is executed before the request is sent to the controller
 app.use(bodyParser.json());
