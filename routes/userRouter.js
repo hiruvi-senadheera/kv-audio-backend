@@ -9,6 +9,6 @@ userRouter.post("/login",loginUser)
 
 userRouter.get("/all",gettAllUsers)
 
-userRouter.get("/block/:email",BlockOrUnblockUser)
+userRouter.put("/block/:email",BlockOrUnblockUser)
 
 export default userRouter;
