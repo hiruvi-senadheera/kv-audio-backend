@@ -99,4 +99,22 @@ export function isCustomer(req){
 
 
 
+// view all customers
+export async function gettAllUsers(req,res){
 
+    if(isAdmin(req)){
+        try{
+            const users = await User.find()
+            res.json(users)
+        }catch(e){
+            res.status(500).json({
+                error : "Failed to get users"
+            })
+        }
+    }else{
+        res.status(403).json({
+            error : "Unauthorized"
+        })
+    }
+
+}
