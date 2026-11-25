@@ -48,6 +48,12 @@ export function loginUser(req,res){
                 })
             }else{
 
+                if(user.isBlocked){
+                    res.status(403).json({
+                        error : "Your account is blocked. Please contact the admin."
+                    })
+                }
+
                 const isPasswordValid = bcrypt.compareSync(data.password, user.password);
                 if(isPasswordValid){
                     const token = jwt.sign({
