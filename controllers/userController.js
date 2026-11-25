@@ -118,3 +118,46 @@ export async function gettAllUsers(req,res){
     }
 
 }
+
+
+//block or unblock user
+export async function BlockOrUnblockUser(req,res){
+
+    const email = req.params.email
+    if (isAdmin(req)){
+        try{
+            const user = await User.findOne(
+                {
+                    email : email
+                }
+            )
+            if(user == null){
+                res.status(404).json({
+                    error : "User not found"                 
+                })
+                return
+            }
+            const isBlocked = !user.isBlocked
+            await User.updateOne(
+                {
+                    email:email
+                },
+                {
+                    isBlocked:isBlocked
+                }
+            )
+            res.json({
+                message: "User blocked/unblocked successfully"
+            })
+        }catch(e){
+            res.status(500).json({
+                error : "Failed to block or unblock users"
+            })
+        }
+    }else{
+        res.status(403).json({
+            error : "Unauthorized"
+        })
+    }
+
+}
