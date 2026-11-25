@@ -104,7 +104,7 @@ export async function gettAllUsers(req,res){
 
     if(isAdmin(req)){
         try{
-            const users = await User.find()
+            const users = await User.find().select("-password")
             res.json(users)
         }catch(e){
             res.status(500).json({
