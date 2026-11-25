@@ -146,7 +146,7 @@ export async function getQuotation(req,res) {
     try{
         
         res.json({
-            message : "Order created successfully",
+            message : "Order quotation",
             total : orderInfo.totalAmount
         })
     }catch(e){
